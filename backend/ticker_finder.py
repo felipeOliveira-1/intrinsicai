@@ -35,7 +35,7 @@ NOTA: <explicação_curta>"""
             ]
             
             response = self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o",
                 messages=messages,
                 temperature=0.1,
                 max_tokens=100  # Reduzido para respostas mais rápidas
