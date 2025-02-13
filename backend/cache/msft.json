@@ -1,0 +1,38 @@
+{
+  "cache_timestamp": "2025-02-11T16:51:08.487830",
+  "data": {
+    "metadata": {
+      "name": "",
+      "sector": "",
+      "industry": "",
+      "description": ""
+    },
+    "market_data": {
+      "market_cap": 0.0,
+      "shares_outstanding": 0.0,
+      "beta": 0.0,
+      "pe_ratio": 0.0,
+      "peg_ratio": 0.0,
+      "dividend_yield": 0.0,
+      "market_price": 0.0
+    },
+    "income": {
+      "revenue": 0.0,
+      "operating_income": 0.0,
+      "net_income": 0.0,
+      "eps": 0.0,
+      "profit_margin": 0.0
+    },
+    "balance": {
+      "total_assets": 0.0,
+      "total_liabilities": 0.0,
+      "total_equity": 0.0,
+      "debt_to_equity": 0.0
+    },
+    "cash_flow": {
+      "operating_cash_flow": 0.0,
+      "capital_expenditure": 0.0,
+      "free_cash_flow": 0.0
+    }
+  }
+}
