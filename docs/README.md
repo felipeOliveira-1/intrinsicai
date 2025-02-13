@@ -1,18 +1,32 @@
-# Stock Intrinsic Value Analysis Tool
+# Análise de Valor Intrínseco de Ações
 
-Uma ferramenta de linha de comando que analisa ações com base em seu Fluxo de Caixa Livre (FCF) e fornece análise especializada usando IA para determinar se são boas oportunidades de investimento.
+Uma ferramenta profissional que combina análise financeira tradicional com inteligência artificial para avaliar ações. O programa oferece uma interface interativa e amigável, permitindo buscar empresas tanto pelo nome quanto pelo ticker.
 
-## Funcionalidades
+## Funcionalidades Principais
 
-- Interface interativa com menu principal
-- Busca de ações por nome da empresa ou ticker
-- Identificação automática de tickers usando IA
+### 1. Interface Interativa
+- Menu principal intuitivo
+- Navegação simplificada
+- Interface colorida e bem formatada
+- Mensagens claras e informativas
+
+### 2. Busca Inteligente de Ações
+- Busca por nome da empresa usando IA
+- Identificação automática do ticker correto
 - Suporte para ações brasileiras (B3) e americanas (NYSE/NASDAQ)
-- Análise de valor intrínseco usando FCF
-- Análise especializada usando GPT-4
-- Interface bonita com cores e formatação
-- Tratamento robusto de erros
+- Validação e confirmação do ticker encontrado
+
+### 3. Análise Financeira Completa
+- Cálculo do valor intrínseco
+- Análise do Fluxo de Caixa Livre (FCF)
+- Métricas de qualidade e crescimento
 - Formatação inteligente de números (B para bilhões, M para milhões)
+
+### 4. Análise com IA
+- Avaliação detalhada por IA especialista
+- Contexto de mercado
+- Riscos e oportunidades
+- Recomendações personalizadas
 
 ## Instalação
 
@@ -28,102 +42,81 @@ cd backend
 pip install -r requirements.txt
 ```
 
-3. Configure sua chave da API OpenAI no arquivo .env:
+3. Configure sua chave da API OpenAI:
+- Crie um arquivo `.env` no diretório backend
+- Adicione sua chave:
 ```bash
 OPENAI_API_KEY=sua_chave_api_aqui
 ```
 
-## Uso
+## Como Usar
 
-Execute o programa:
+1. Inicie o programa:
 ```bash
+cd backend
 python main.py
 ```
 
-### Menu Principal
+2. No menu principal, escolha uma opção:
 
-O programa apresentará um menu interativo com as seguintes opções:
-
-1. **Analisar por nome da empresa**
-   - Digite o nome da empresa (ex: "Petrobras")
+   **Opção 1: Analisar por nome da empresa**
+   - Digite o nome da empresa (ex: "Petrobras", "Intel")
    - A IA identificará o ticker correto
    - Confirme se deseja usar o ticker encontrado
    - Veja a análise completa
 
-2. **Analisar por ticker**
+   **Opção 2: Analisar por ticker**
    - Digite o ticker diretamente
-   - Para ações brasileiras, use .SA (ex: PETR4.SA)
-   - Para ações americanas, use o ticker normal (ex: AAPL)
+   - Para ações brasileiras: use .SA (ex: PETR4.SA)
+   - Para ações americanas: use o ticker normal (ex: AAPL)
 
-3. **Sobre o programa**
-   - Informações sobre funcionalidades
+   **Opção 3: Sobre o programa**
+   - Veja informações detalhadas
    - Instruções de uso
-   - Observações importantes
+   - Dicas importantes
 
-4. **Sair**
+   **Opção 4: Sair**
    - Encerra o programa
 
-### Exemplos de Uso
+## Estrutura do Projeto
 
-#### 1. Análise por Nome da Empresa
+### Módulos Principais
+- `main.py`: Interface do usuário e controle principal
+- `ticker_finder.py`: Identificação inteligente de tickers
+- `yahoo_finance.py`: Obtenção de dados financeiros
+- `ai_analysis.py`: Análise especializada com IA
 
-```bash
-python main.py
-# Escolha opção 1
-# Digite: Petrobras
-```
+## Observações Importantes
 
-O programa vai:
-- Identificar o ticker correto (PETR4.SA)
-- Mostrar informações sobre o ticker
-- Pedir confirmação
-- Realizar a análise completa
+1. **Ações Brasileiras**
+   - Use sempre o sufixo .SA
+   - Ex: PETR4.SA, VALE3.SA, ITUB4.SA
 
-#### 2. Análise por Ticker
-
-```bash
-python main.py
-# Escolha opção 2
-# Digite: PETR4.SA
-```
-
-Para ações brasileiras, adicione .SA:
-```bash
-PETR4.SA  # Petrobras
-VALE3.SA  # Vale
-ITUB4.SA  # Itaú
-```
-
-Para ações americanas, use o ticker normal:
-```bash
-AAPL  # Apple
-MSFT  # Microsoft
-GOOGL # Google
-```
-
-### Análise Fornecida
-
-Para cada ação, o programa mostra:
-1. **Dados Básicos**
-   - Preço atual e market cap
-   - Fluxo de caixa operacional
-   - CAPEX e outros dados financeiros
-
-2. **Análise de Valor**
-   - Cálculo do valor intrínseco
-   - Preço justo com margem de segurança
-   - Recomendação de compra/venda
+2. **Ações Americanas**
+   - Use o ticker oficial
+   - Ex: AAPL, MSFT, GOOGL
 
 3. **Análise da IA**
-   - Contexto de mercado
-   - Análise fundamentalista
-   - Riscos e oportunidades
-   - Recomendações detalhadas
+   - Baseada em dados públicos
+   - Considera múltiplos fatores
+   - Fornece recomendações contextualizadas
 
-## Observações
+4. **Requisitos**
+   - Conexão com internet
+   - Python 3.8 ou superior
+   - Chave API OpenAI válida
 
-- Para ações brasileiras, sempre use o sufixo .SA
-- A análise considera dados históricos e projeções
-- As recomendações da IA são baseadas em dados públicos
-- O programa requer conexão com internet
-- Mantenha sua chave API segura no arquivo .env
+## Dependências Principais
+- `yfinance`: Dados financeiros
+- `openai`: Análise com IA
+- `rich`: Interface do usuário
+- `typer`: CLI
+- `pandas`: Manipulação de dados
+
+## Segurança
+- Nunca compartilhe sua chave API
+- Mantenha o arquivo .env seguro
+- Use apenas em ambiente confiável
+
+## Suporte
+Para dúvidas ou problemas, abra uma issue no GitHub do projeto.
