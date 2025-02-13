@@ -228,23 +228,15 @@ def show_about():
     console.print("\nPressione Enter para voltar ao menu principal...", end="")
     input()
 
-def analyze(input_str: str):
+def analyze(input_str: str, is_company_name: bool = False):
     """Analisa uma ação pelo nome da empresa ou ticker"""
     try:
         # Inicializa as APIs
         yahoo_api = YahooFinanceAPI()
         ticker_finder = TickerFinder()
         
-        # Verifica se o input é um ticker válido
-        if ticker_finder.is_valid_ticker(input_str):
-            ticker = input_str.upper()
-            if not ticker.endswith('.SA'):  # Se não for BR, verifica se tem .SA no final
-                # Pergunta se é ação brasileira
-                if Confirm.ask(f"\nO ticker {ticker} é de uma empresa brasileira?"):
-                    ticker = f"{ticker}.SA"
-            console.print(f"\n[blue]Usando ticker:[/blue] {ticker}")
-        else:
-            # Se não for ticker, busca usando a IA
+        # Se for nome da empresa, busca o ticker primeiro
+        if is_company_name:
             with console.status("[bold green]Buscando ticker...") as status:
                 ticker_info = ticker_finder.get_company_ticker(input_str)
             
@@ -259,6 +251,18 @@ def analyze(input_str: str):
                 return
             
             ticker = ticker_info['ticker_principal']
+        else:
+            # Verifica se o input é um ticker válido
+            if ticker_finder.is_valid_ticker(input_str):
+                ticker = input_str.upper()
+                if not ticker.endswith('.SA'):  # Se não for BR, verifica se tem .SA no final
+                    # Pergunta se é ação brasileira
+                    if Confirm.ask(f"\nO ticker {ticker} é de uma empresa brasileira?"):
+                        ticker = f"{ticker}.SA"
+                console.print(f"\n[blue]Usando ticker:[/blue] {ticker}")
+            else:
+                console.print(f"\n[red]Ticker inválido: {input_str}[/red]")
+                return
         
         # Análise dos dados
         with console.status(f"[bold green]Analisando {ticker}...") as status:
@@ -289,7 +293,7 @@ def main_loop():
         
         if choice == 1:
             company_name = Prompt.ask("\n[cyan]Digite o nome da empresa[/cyan]")
-            analyze(company_name)
+            analyze(company_name, is_company_name=True)  # Indica que é nome de empresa
             console.print("\nPressione Enter para continuar...", end="")
             input()
             
@@ -298,7 +302,7 @@ def main_loop():
                 "\n[cyan]Digite o ticker[/cyan]",
                 help="Para ações brasileiras, adicione .SA (ex: PETR4.SA)"
             )
-            analyze(ticker)
+            analyze(ticker, is_company_name=False)  # Indica que é ticker
             console.print("\nPressione Enter para continuar...", end="")
             input()
             
