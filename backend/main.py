@@ -1,13 +1,17 @@
 import asyncio
 import logging
 from yahoo_finance import YahooFinanceAPI
-from typing import List, Optional, Dict
+from typing import Optional, Dict
 import typer
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
+from rich.prompt import Prompt, Confirm, IntPrompt
+from rich.markdown import Markdown
+from rich import box
 from ai_analysis import AIAnalyst
+from ticker_finder import TickerFinder
 
 # Configure logging
 logging.basicConfig(
@@ -17,8 +21,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize API and CLI
-yahoo_api = YahooFinanceAPI()
 app = typer.Typer()
 console = Console()
 
@@ -162,52 +164,157 @@ def display_analysis(ticker: str, data: Dict) -> None:
     except Exception as e:
         console.print(f"\n[red]Error displaying analysis: {str(e)}[/red]")
 
-@app.command()
-def analyze(
-    ticker: str = typer.Argument(..., help="Stock ticker symbol to analyze"),
-    multiple: float = typer.Option(None, help="Override the suggested FCF multiple"),
-    margin: float = typer.Option(0.3, help="Margin of safety (0.3 = 30%)")
-):
-    """Analyze a stock and determine if it's a good buy based on FCF analysis"""
+def show_welcome_message():
+    """Exibe mensagem de boas-vindas"""
+    welcome_md = """
+    # 📈 Análise de Valor Intrínseco de Ações
+    
+    Bem-vindo ao analisador de ações! Esta ferramenta ajuda você a:
+    
+    * Avaliar o valor intrínseco de ações
+    * Obter análises detalhadas usando IA
+    * Tomar decisões de investimento mais informadas
+    
+    Desenvolvido por Felipe Oliveira
+    """
+    console.print(Markdown(welcome_md))
+    console.print()
+
+def show_main_menu() -> int:
+    """Exibe o menu principal e retorna a opção escolhida"""
+    menu = Table(show_header=False, box=box.ROUNDED)
+    menu.add_column("Opção", style="cyan", justify="right")
+    menu.add_column("Descrição", style="white")
+    
+    menu.add_row("1", "Analisar por nome da empresa")
+    menu.add_row("2", "Analisar por ticker")
+    menu.add_row("3", "Sobre o programa")
+    menu.add_row("4", "Sair")
+    
+    console.print(Panel(menu, title="Menu Principal", border_style="blue"))
+    
+    return IntPrompt.ask(
+        "\n[cyan]Escolha uma opção[/cyan]",
+        choices=["1", "2", "3", "4"],
+        show_choices=False
+    )
+
+def show_about():
+    """Exibe informações sobre o programa"""
+    about_md = """
+    # Sobre o Programa
+    
+    Este programa utiliza técnicas avançadas de análise financeira e inteligência artificial para avaliar ações.
+    
+    ## Funcionalidades
+    
+    * **Análise Fundamentalista**: Cálculo do valor intrínseco usando DCF
+    * **Inteligência Artificial**: Análise detalhada usando GPT-4
+    * **Suporte**: Ações brasileiras (B3) e americanas (NYSE/NASDAQ)
+    
+    ## Como Usar
+    
+    1. Escolha entre buscar por nome da empresa ou ticker
+    2. Forneça as informações solicitadas
+    3. Analise os resultados apresentados
+    
+    ## Observações
+    
+    * Para ações brasileiras, os tickers terminam com .SA
+    * A análise considera múltiplos fatores financeiros
+    * As recomendações da IA são baseadas em dados históricos
+    """
+    console.print(Markdown(about_md))
+    console.print("\nPressione Enter para voltar ao menu principal...", end="")
+    input()
+
+def analyze(input_str: str):
+    """Analisa uma ação pelo nome da empresa ou ticker"""
     try:
-        # Show loading message
-        with console.status(f"[bold green]Analyzing {ticker.upper()}...", spinner="dots") as status:
-            # Run the analysis
-            try:
-                data = asyncio.run(yahoo_api.get_financials(ticker))
-                status.stop()
-                # Display results
-                display_analysis(ticker, data)
-            except Exception as e:
-                status.stop()
-                console.print(f"\n[red]Error analyzing {ticker}:[/red]")
-                console.print(f"[red]{str(e)}[/red]")
+        # Inicializa as APIs
+        yahoo_api = YahooFinanceAPI()
+        ticker_finder = TickerFinder()
+        
+        # Verifica se o input é um ticker válido
+        if ticker_finder.is_valid_ticker(input_str):
+            ticker = input_str.upper()
+            if not ticker.endswith('.SA'):  # Se não for BR, verifica se tem .SA no final
+                # Pergunta se é ação brasileira
+                if Confirm.ask(f"\nO ticker {ticker} é de uma empresa brasileira?"):
+                    ticker = f"{ticker}.SA"
+            console.print(f"\n[blue]Usando ticker:[/blue] {ticker}")
+        else:
+            # Se não for ticker, busca usando a IA
+            with console.status("[bold green]Buscando ticker...") as status:
+                ticker_info = ticker_finder.get_company_ticker(input_str)
+            
+            if not ticker_info:
+                console.print(f"\n[red]Não foi possível encontrar o ticker para: {input_str}[/red]")
                 return
             
-    except KeyboardInterrupt:
-        console.print("\n[yellow]Analysis cancelled by user[/yellow]")
+            # Exibe informações do ticker
+            ticker_finder.display_ticker_info(ticker_info)
+            
+            if not Confirm.ask("\nDeseja continuar com este ticker?"):
+                return
+            
+            ticker = ticker_info['ticker_principal']
+        
+        # Análise dos dados
+        with console.status(f"[bold green]Analisando {ticker}...") as status:
+            try:
+                # Obtém dados financeiros
+                data = asyncio.run(yahoo_api.get_financials(ticker))
+                
+                # Exibe resultados
+                display_analysis(ticker, data)
+            except Exception as e:
+                if "Could not get basic stock information" in str(e):
+                    console.print(f"\n[red]Não foi possível encontrar dados para o ticker {ticker}.[/red]")
+                    console.print("[yellow]Verifique se o ticker está correto e tente novamente.[/yellow]")
+                else:
+                    raise e
+        
     except Exception as e:
-        console.print(f"\n[red]Unexpected error:[/red]")
+        console.print(f"\n[red]Erro ao analisar ação:[/red]")
         console.print(f"[red]{str(e)}[/red]")
 
-@app.command()
-def analyze_multiple(
-    tickers: List[str] = typer.Argument(..., help="List of stock tickers to analyze"),
-    multiple: float = typer.Option(None, help="Override the suggested FCF multiple"),
-    margin: float = typer.Option(0.3, help="Margin of safety (0.3 = 30%)")
-):
-    """Analyze multiple stocks at once"""
-    for i, ticker in enumerate(tickers):
-        if i > 0:
-            console.print()
-        console.rule(f"[bold]Analysis for {ticker.upper()}[/bold]")
-        analyze(ticker, multiple, margin)
+def main_loop():
+    """Loop principal do programa"""
+    show_welcome_message()
+    
+    while True:
+        console.clear()
+        choice = show_main_menu()
+        
+        if choice == 1:
+            company_name = Prompt.ask("\n[cyan]Digite o nome da empresa[/cyan]")
+            analyze(company_name)
+            console.print("\nPressione Enter para continuar...", end="")
+            input()
+            
+        elif choice == 2:
+            ticker = Prompt.ask(
+                "\n[cyan]Digite o ticker[/cyan]",
+                help="Para ações brasileiras, adicione .SA (ex: PETR4.SA)"
+            )
+            analyze(ticker)
+            console.print("\nPressione Enter para continuar...", end="")
+            input()
+            
+        elif choice == 3:
+            console.clear()
+            show_about()
+            
+        elif choice == 4:
+            console.print("\n[green]Obrigado por usar o programa! Até a próxima! 👋[/green]")
+            break
 
 if __name__ == "__main__":
     try:
-        app()
+        main_loop()
     except KeyboardInterrupt:
-        console.print("\n[yellow]Program terminated by user[/yellow]")
+        console.print("\n[yellow]Programa encerrado pelo usuário.[/yellow]")
     except Exception as e:
-        console.print(f"\n[red]Fatal error:[/red]")
+        console.print("\n[red]Erro inesperado:[/red]")
         console.print(f"[red]{str(e)}[/red]")

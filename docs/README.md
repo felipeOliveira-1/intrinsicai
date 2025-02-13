@@ -1,199 +1,129 @@
 # Stock Intrinsic Value Analysis Tool
 
-A command-line tool that analyzes stocks based on their Free Cash Flow (FCF) and provides AI-powered expert analysis to determine if they are good investment opportunities.
+Uma ferramenta de linha de comando que analisa ações com base em seu Fluxo de Caixa Livre (FCF) e fornece análise especializada usando IA para determinar se são boas oportunidades de investimento.
 
-## Features
+## Funcionalidades
 
-- Fetch real-time stock data using Yahoo Finance API
-- Calculate intrinsic value using FCF analysis
-- Apply margin of safety to determine buy price
-- AI-powered expert analysis using GPT-4
-- Beautiful terminal output with color-coded recommendations
-- Support for analyzing multiple stocks at once
-- Customizable FCF multiple and margin of safety
-- Robust error handling and detailed logging
-- Smart number formatting (B for billions, M for millions)
+- Interface interativa com menu principal
+- Busca de ações por nome da empresa ou ticker
+- Identificação automática de tickers usando IA
+- Suporte para ações brasileiras (B3) e americanas (NYSE/NASDAQ)
+- Análise de valor intrínseco usando FCF
+- Análise especializada usando GPT-4
+- Interface bonita com cores e formatação
+- Tratamento robusto de erros
+- Formatação inteligente de números (B para bilhões, M para milhões)
 
-## Installation
+## Instalação
 
-1. Clone the repository:
+1. Clone o repositório:
 ```bash
-git clone https://github.com/yourusername/instricvalue.git
-cd instricvalue
+git clone https://github.com/felipeOliveira-1/intrinsicai.git
+cd intrinsicai
 ```
 
-2. Install dependencies:
+2. Instale as dependências:
 ```bash
+cd backend
 pip install -r requirements.txt
 ```
 
-3. Set up your OpenAI API key in the .env file:
+3. Configure sua chave da API OpenAI no arquivo .env:
 ```bash
-OPENAI_API_KEY=your_api_key_here
+OPENAI_API_KEY=sua_chave_api_aqui
 ```
 
-## Usage
+## Uso
 
-### Analyze a Single Stock
+Execute o programa:
+```bash
+python main.py
+```
+
+### Menu Principal
+
+O programa apresentará um menu interativo com as seguintes opções:
+
+1. **Analisar por nome da empresa**
+   - Digite o nome da empresa (ex: "Petrobras")
+   - A IA identificará o ticker correto
+   - Confirme se deseja usar o ticker encontrado
+   - Veja a análise completa
+
+2. **Analisar por ticker**
+   - Digite o ticker diretamente
+   - Para ações brasileiras, use .SA (ex: PETR4.SA)
+   - Para ações americanas, use o ticker normal (ex: AAPL)
+
+3. **Sobre o programa**
+   - Informações sobre funcionalidades
+   - Instruções de uso
+   - Observações importantes
+
+4. **Sair**
+   - Encerra o programa
+
+### Exemplos de Uso
+
+#### 1. Análise por Nome da Empresa
 
 ```bash
-cd backend
-python main.py analyze AAPL
+python main.py
+# Escolha opção 1
+# Digite: Petrobras
 ```
 
-This will analyze Apple Inc. stock and show:
-- Current price and market cap
-- Operating Cash Flow and Capital Expenditures
-- Free Cash Flow analysis
-- Fair value calculation
-- Buy/Hold recommendation with color-coded indicators
-- AI expert analysis and recommendations
-- Detailed financial insights
+O programa vai:
+- Identificar o ticker correto (PETR4.SA)
+- Mostrar informações sobre o ticker
+- Pedir confirmação
+- Realizar a análise completa
 
-### Analyze Multiple Stocks
+#### 2. Análise por Ticker
 
 ```bash
-python main.py analyze-multiple AAPL MSFT GOOGL
+python main.py
+# Escolha opção 2
+# Digite: PETR4.SA
 ```
 
-### Customize Analysis
-
-You can customize the FCF multiple and margin of safety:
-
+Para ações brasileiras, adicione .SA:
 ```bash
-python main.py analyze AAPL --multiple 12 --margin 0.25
+PETR4.SA  # Petrobras
+VALE3.SA  # Vale
+ITUB4.SA  # Itaú
 ```
 
-- `--multiple`: FCF multiple for valuation (default: 10)
-- `--margin`: Margin of safety as decimal (default: 0.3 for 30%)
-
-## Detailed Usage Guide
-
-### Initial Setup
-
-1. Make sure you're in the correct directory:
+Para ações americanas, use o ticker normal:
 ```bash
-cd backend  # If not already in the backend directory
+AAPL  # Apple
+MSFT  # Microsoft
+GOOGL # Google
 ```
 
-2. Verify Python installation:
-```bash
-python --version  # Should be 3.8 or higher
-```
+### Análise Fornecida
 
-3. Set up your OpenAI API key:
-- Create an account at https://platform.openai.com/
-- Get your API key from the dashboard
-- Add it to your .env file
+Para cada ação, o programa mostra:
+1. **Dados Básicos**
+   - Preço atual e market cap
+   - Fluxo de caixa operacional
+   - CAPEX e outros dados financeiros
 
-### Basic Usage
+2. **Análise de Valor**
+   - Cálculo do valor intrínseco
+   - Preço justo com margem de segurança
+   - Recomendação de compra/venda
 
-#### 1. Analyzing a Single Stock
+3. **Análise da IA**
+   - Contexto de mercado
+   - Análise fundamentalista
+   - Riscos e oportunidades
+   - Recomendações detalhadas
 
-For US stocks, use the ticker symbol directly:
-```bash
-python main.py analyze AAPL  # Apple Inc.
-python main.py analyze MSFT  # Microsoft
-```
+## Observações
 
-For Brazilian stocks, add the .SA suffix:
-```bash
-python main.py analyze PETR4.SA  # Petrobras
-python main.py analyze VALE3.SA  # Vale
-```
-
-#### 2. Analyzing Multiple Stocks
-
-You can analyze several stocks at once:
-```bash
-python main.py analyze-multiple AAPL MSFT GOOGL
-```
-
-For a mix of US and Brazilian stocks:
-```bash
-python main.py analyze-multiple AAPL PETR4.SA VALE3.SA
-```
-
-## Features in Detail
-
-### 1. Quantitative Analysis
-- Free Cash Flow (FCF) calculation
-- Growth rate estimation
-- Quality metrics (FCF/Net Income, Debt/FCF)
-- Working capital analysis
-- Fair value calculation using FCF multiple
-- Margin of safety application
-
-### 2. AI Expert Analysis
-- Market context and insights
-- Risk assessment
-- Growth prospects evaluation
-- Competitive analysis
-- Investment recommendation
-- Industry-specific considerations
-
-### 3. Output Format
-- Clear, color-coded tables
-- Visual indicators for buy/sell recommendations
-- Detailed AI analysis panel
-- Historical data comparison
-- Quality metrics assessment
-
-## Dependencies
-
-- Python 3.8+
-- yfinance: Stock data fetching
-- pandas: Data manipulation
-- rich: Terminal formatting
-- openai: AI analysis
-- python-dotenv: Environment variables
-- typer: CLI interface
-
-## Error Handling
-
-The tool includes robust error handling for:
-1. Invalid stock tickers
-2. API connection issues
-3. Missing financial data
-4. AI service interruptions
-5. Invalid user inputs
-
-## Output Example
-
-```
-Stock Analysis for AAPL
-╭────────────────────┬─────────────╮
-│ Metric            │ Value       │
-├────────────────────┼─────────────┤
-│ Current Price     │ $182.31     │
-│ Market Cap        │ $2.84T      │
-│ FCF per Share     │ $6.42       │
-│ Fair Value        │ $64.20      │
-╰────────────────────┴─────────────╯
-
-AI Expert Analysis:
-╭──────────────────────────────────╮
-│ Comprehensive market analysis...  │
-│ Investment recommendation...      │
-╰──────────────────────────────────╯
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## How It Works
-
-1. Fetches latest financial data from Yahoo Finance
-2. Extracts Operating Cash Flow and Capital Expenditures
-3. Calculates Free Cash Flow (OCF - CapEx)
-4. Determines FCF per share using current shares outstanding
-5. Applies a multiple to determine fair value
-6. Adds margin of safety to determine buy price
-7. Compares current price to buy price
-8. Provides a clear buy/hold recommendation with detailed insights
-9. Uses OpenAI API for AI expert analysis
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- Para ações brasileiras, sempre use o sufixo .SA
+- A análise considera dados históricos e projeções
+- As recomendações da IA são baseadas em dados públicos
+- O programa requer conexão com internet
+- Mantenha sua chave API segura no arquivo .env
