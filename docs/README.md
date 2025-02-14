@@ -26,7 +26,7 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 - Mensagens claras e informativas
 
 <div align="center">
-  <img src="docs/imgs/first.jpeg" alt="Tela principal do programa" width="600">
+  <img src="https://assets.zyrosite.com/YBgEyWxyOWC5zP2j/whatsapp-image-2025-02-13-at-21.05.03-mjEqXVkr5Eiy74b1.jpeg" alt="Tela principal do programa" width="600">
 </div>
 
 #### 2. Busca Inteligente de Ações
@@ -36,7 +36,7 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 - Validação e confirmação do ticker encontrado
 
 <div align="center">
-  <img src="docs/imgs/second.jpeg" alt="Busca por nome e identificação do ticker" width="600">
+  <img src="https://assets.zyrosite.com/YBgEyWxyOWC5zP2j/whatsapp-image-2025-02-13-at-21.05.40-YBgevKMzbWHKXLVE.jpeg" alt="Busca por nome e identificação do ticker" width="600">
 </div>
 
 #### 3. Análise Financeira Completa
@@ -46,7 +46,7 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 - Formatação inteligente de números (B para bilhões, M para milhões)
 
 <div align="center">
-  <img src="docs/imgs/third.jpeg" alt="Detalhes da análise financeira" width="600">
+  <img src="https://assets.zyrosite.com/YBgEyWxyOWC5zP2j/whatsapp-image-2025-02-13-at-21.06.09-YD0BqKnNpEfQqw6J.jpeg" alt="Detalhes da análise financeira" width="600">
 </div>
 
 #### 4. Análise com IA
@@ -56,11 +56,11 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 - Recomendações personalizadas
 
 <div align="center">
-  <img src="docs/imgs/fourth.jpeg" alt="Análise com IA" width="600">
+  <img src="https://assets.zyrosite.com/YBgEyWxyOWC5zP2j/whatsapp-image-2025-02-13-at-21.07.00-m2Wa205DN4iGebbA.jpeg" alt="Análise com IA" width="600">
 </div>
 
 <div align="center">
-  <img src="docs/imgs/fifth.jpeg" alt="Recomendações e insights" width="600">
+  <img src="https://assets.zyrosite.com/YBgEyWxyOWC5zP2j/whatsapp-image-2025-02-13-at-21.07.42-mnlqPVyr8yS4DLLn.jpeg" alt="Recomendações e insights" width="600">
 </div>
 
 ---
@@ -98,21 +98,21 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 
 2. No menu principal, escolha uma opção:
 
-   **Opção 1: Analisar por nome da empresa**
-   - Digite o nome da empresa (ex: "Petrobras", "Intel")
-   - A IA identificará o ticker correto
-   - Confirme se deseja usar o ticker encontrado
+   **Opção 1: Analisar por nome da empresa**  
+   - Digite o nome da empresa (ex: "Petrobras", "Intel")  
+   - A IA identificará o ticker correto  
+   - Confirme se deseja usar o ticker encontrado  
    - Veja a análise completa
 
-   **Opção 2: Analisar por ticker**
+   **Opção 2: Analisar por ticker**  
    - Digite o ticker diretamente  
    - Para ações brasileiras: use .SA (ex: PETR4.SA)  
    - Para ações americanas: use o ticker normal (ex: AAPL)
 
-   **Opção 3: Sobre o programa**
+   **Opção 3: Sobre o programa**  
    - Veja informações detalhadas, instruções de uso e dicas importantes
 
-   **Opção 4: Sair**
+   **Opção 4: Sair**  
    - Encerra o programa
 
 ---
@@ -168,3 +168,4 @@ Uma ferramenta profissional que combina análise financeira tradicional com inte
 ## Suporte
 
 Para dúvidas ou problemas, abra uma issue no [GitHub do projeto](https://github.com/felipeOliveira-1/intrinsicai/tree/main).
+
